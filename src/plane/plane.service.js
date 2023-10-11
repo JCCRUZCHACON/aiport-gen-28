@@ -1,30 +1,32 @@
-import Plane from "./plane.model.js";
+import Plane from './plane.model.js';
 
 export class PlaneService {
-
-  async findAllPlane(){
-    return await Plane.findAll({ where: { status: true }})
-  }
-
-  async findOnePlane(id){
+  async findOne(id) {
     return await Plane.findOne({
-      where : {
+      where: {
         id,
-        status: true
+        status: true,
       },
-    })
+    });
   }
 
-  async createPlane(data) {
-    return await Plane.create( data )
+  async findAll() {
+    return await Plane.findAll({
+      where: {
+        status: true,
+      },
+    });
   }
 
-  async updateCity(plane, data){
-    return await plane.update(data)
+  async create(planeData) {
+    return await Plane.create(planeData);
   }
 
-  async deleteCity(plane){
-    return await plane.update({ status: false })
+  async update(plane, planeData) {
+    return await plane.update(planeData);
   }
 
+  async delete(plane) {
+    return await plane.update({ status: false });
+  }
 }

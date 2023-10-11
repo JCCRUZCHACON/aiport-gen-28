@@ -8,33 +8,40 @@ const Flight = sequelize.define('flight', {
     autoIncrement: true,
     type: DataTypes.INTEGER
   },
-  origin_id: {
+  originId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    field: 'origin_id',
   },
-  destination_id: {
+  destinationId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    field: 'destination_id',
   },
-  plane_id: {
+  planeId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'plane_id',
   },
-  departure_time: {
-    type: DataTypes.timestamp,
-    allowNull: false
+  departureDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    field: 'departure_date',
   },
-  check_in: {
-    type: DataTypes.timestamp,
+  checkIn: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    field: 'check_in',
   },
-  flight_status: {
-    defaultValue: "pending"
-  }
+  status: {
+    type: DataTypes.ENUM('pending', 'inProgress', 'done', 'cancelled'),
+    allowNull: false,
+    defaultValue: 'pending',
+  },
 
 })
 
 export default Flight
-
-
 
 
 

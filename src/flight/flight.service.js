@@ -1,30 +1,50 @@
-import Flight from "./flight.model.js";
+import Flight from './flight.model.js';
+import { Op } from "sequelize";
 
 export class FlightService {
+  
+  async findOne(id, status){
+    
+    //1 crearme un objeto con las condiciones de mi consulta
+    let whereClause = {
+      id: id,
+      status: status
+    }
+    
+    if(!status){
+      //pending, inProgress, done
+      whereClause.status = {
+        [Op.in]: ['pending', 'inProgress', 'done']
+      }
+    }
 
-  async findAllFlight(){
-    return await Flight.findAll({ where: { status: true }})
-  }
-
-  async findOneFlight(id){
     return await Flight.findOne({
-      where : {
-        id,
-        status: true
-      },
+      where: whereClause
     })
+
   }
 
-  async createFlight(data) {
-    return await Flight.create( data )
+  async findAll() {
+    return await Flight.findAll({
+      where: {
+        status: {
+          [Op.notIn]: ['done', 'cancelled']
+        },
+      },
+    });
   }
 
-  async updateFlight(flight, data){
-    return await flight.update(data)
+  async create(flightData) {
+    return await Flight.create(flightData);
   }
 
-  async deleteFlight(flight){
-    return await flight.update({ status: false })
+  async update(flight, flightData) {
+    return await flight.update(flightData);
   }
 
+  async delete(flight) {
+    return await flight.update({
+      status: 'cancelled',
+    });
+  }
 }

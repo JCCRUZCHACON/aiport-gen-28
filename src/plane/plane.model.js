@@ -11,9 +11,10 @@ const Plane = sequelize.define('plane', {
   plane_number: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    field: "plane_number"
   },
   model: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING(50),
     allowNull: false,
   },
   max_capacity: {
@@ -21,8 +22,14 @@ const Plane = sequelize.define('plane', {
     allowNull: false
   },
   airline: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: DataTypes.ENUM(
+      'AeroGlobe',
+      'AeroTronix',
+      'VelocityAir',
+      'AirQuest',
+      'StarLinx'
+    ),
+    allowNull: false,
   },
   status: {
     type: DataTypes.BOOLEAN,
@@ -33,6 +40,7 @@ const Plane = sequelize.define('plane', {
 })
 
 export default Plane
+
 
 
 

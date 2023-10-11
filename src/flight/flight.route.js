@@ -1,26 +1,29 @@
-import { Router } from 'express';
-import { 
+import express from 'express';
+import {
+  createFlights,
+  deleteFlights,
   findAllFlights,
-  createFlight ,
-  findOneFlight,
-  updateFlight,
-  deleteFlight,
-} from './city.controller.js'
+  updateFlights,
+  findOneFlights,
+  approveFlight,
+} from './flight.controller.js';
+import { restrictTo } from '../auth/auth.middleware.js';
 
-import { validateExistFlight } from './flight.middleware.js'
-import { protect } from '../auth/auth.middleware.js';
-
-export const router = Router()
-
-// router.use(protect)
-
-router.route("/")
-  .get(findAllFlights)
-  .post(createFlight)
+export const router = express.Router();
 
 router
-  .use('/:id', validateExistFlight)
-  .route("/:id")
-  .get(findOneFlight)
-  .patch(updateFlight)
-  .delete(deleteFlight)
+  .route('/')
+  .get(findAllFlights)
+  .post(restrictTo('admin', 'developer'), createFlights);
+
+router.patch(
+  '/approve-takeoff/:id',
+  restrictTo('admin', 'developer'),
+  approveFlight
+)
+
+router
+  .route('/:id')
+  .get(findOneFlights)
+  .patch(restrictTo('admin', 'developer'), updateFlights)
+  .delete(restrictTo('admin', 'developer'), deleteFlights);
